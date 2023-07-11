@@ -1,4 +1,5 @@
 from collections import UserDict
+from datetime import date
 
 class AddressBook(UserDict):
 
@@ -62,7 +63,9 @@ class Phone(Field):
 
 
 class Birthday(Field):
-    ...
+    def __init__(self, value: str) -> None:
+        self.value_date = date.fromisoformat(value)
+        super().__init__(value)
 
 class Record:
 
@@ -73,6 +76,7 @@ class Record:
         self.address = address
         self.phones = []
         self.add_phone(phone)
+        self.birthday = None
 
     def add(self, field: Field) -> bool:
         if isinstance(field, Phone):
@@ -112,6 +116,28 @@ class Record:
     def get_csv_header() -> str:
         cols = ["name","phone","email","address"]
         return ",".join(cols)
+
+    def add_birthday(self, birthday: Birthday) -> None:
+        self.birthday = birthday
+    
+    def delete_birthday(self) -> None:
+        self.birthday = None
+
+    def days_to_birthday(self) -> int:
+        result = None
+        if self.birthday:
+            date_now = date.today()
+            date_now_year = date_now.year
+            bd = self.birthday.value_date.replace(year=date_now_year)
+            if bd < date_now:
+                date_now_year += 1
+            bd = self.birthday.value_date.replace(year=date_now_year)
+            diff_bd = bd - date_now
+            result = diff_bd.days
+
+        return result
+
+
 
     def __repr__(self):
         return str(self)

@@ -90,14 +90,41 @@ def handler_help(*args) -> str:
         commands.extend(COMMAND_EXIT)
         return "List of commands: " + ", ".join(commands)
     else:
-        return COMMANDS_HELP.get(command,  f"Help for this command '{command}' is not yet available")
+        return COMMANDS_HELP.get(command,  
+               f"Help for this command '{command}' is not yet available")
 
+
+@input_error
+def handler_add_birthday(*args) -> str:
+    user = args[0]
+    birthday = args[1]
+    a_book.get_record(user).add_birthday(ab.Birthday(birthday))
+    return "Done"
+
+
+@input_error
+def handler_delete_birthday(*args) -> str:
+    user = args[0]
+    a_book.get_record(user).delete_birthday()
+    return "Done"
+
+
+@input_error
+def handler_days_to_birthday(*args) -> str:
+    user = args[0]
+    result = a_book.get_record(user).days_to_birthday()
+    if result==None:
+        result = "Not defined"
+    elif result == 0:
+        result = f"{result} days, It's today !!!"
+    else:
+        result = f"{result} days"
+    return result
 
 COMMAND_EXIT = ("good bye", "close", "exit", "q", "quit")
 
 COMMANDS = {
     "hello": handler_hello,
-    "add": handler_add,
     "delete user": handler_delete_record,
     "change phone": handler_change_phone,
     "delete phone": handler_delete_phone,
@@ -107,23 +134,34 @@ COMMANDS = {
     "list": handler_show_all,
     "help": handler_help,
     "?": handler_help,
+    "add birthday": handler_add_birthday,
+    "delete birthday": handler_delete_birthday,
+    "to birthday": handler_days_to_birthday,
+    "add": handler_add,
 }
 
 COMMANDS_HELP = {
     "hello": "Just hello",
-    "add": "Add user's phone or multiple phones separated by space. Required username and phone.",
     "delete user": "Delete ALL records of user. Required username.",
     "delete": "Can be: delete user, delete phone",
-    "change": "Can be: change phone",
     "change phone": "Change user's phone. Required username, old phone, new phone",
     "delete phone": "Delete user's phone. Required username, phone",
-    "show": "Can be: show phone, show all",
+    "change": "Can be: change phone",
+    "add birthday": "Add or change the user's birthday. Required username, birthday, "  
+                    "please use ISO 8601 date format",
+    "delete birthday": "Delete user's birthday. Required username",
+    "to birthday": "Show days until the user's birthday. Required username,",
     "show phone": "Show user's phones. Required username.",
+    "show birthday": "Show user's birthday. Required username.",
     "show all": "Show all user's record.",
     "show csv": "Show all user's record in csv format",    
+    "show": "Can be: show phone, show birthday, show all",
+    "add": "Add user's phone or multiple phones separated by space. "
+            "Required username and phone.",
     "list": "Show all user's record.",   
     "help": "List of commands  and their description.",
-    "?": "List of commands and their description. Also you can use '?' for any command as parameter",
+    "?": "List of commands and their description. Also you can use '?' "
+         "for any command as parameter",
     "exit": "Exit of bot.",
     "close": "Exit of bot.",
     "quit": "Exit of bot.",
@@ -136,6 +174,7 @@ a_book = ab.AddressBook()
 
 def main():
     print("Bot init")
+    handler_add("Jon1", "+38044333223", "3344")
     while True:
         try:
             user_input = input("Enter your command:")
