@@ -56,8 +56,13 @@ class Email(Field):
 
 
 class Phone(Field):
-    ...
+    def __init__(self, value: str) -> None:
+        value = str(int(value))
+        super().__init__(value)
 
+
+class Birthday(Field):
+    ...
 
 class Record:
 
