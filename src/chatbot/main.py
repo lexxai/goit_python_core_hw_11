@@ -113,12 +113,18 @@ def handler_delete_birthday(*args) -> str:
 def handler_days_to_birthday(*args) -> str:
     user = args[0]
     result = a_book.get_record(user).days_to_birthday()
-    if result==None:
-        result = "Not defined"
+    if result is None:
+        result = f"No birthday is defined for user: {user} "
     elif result == 0:
-        result = f"{result} days, It's today !!!"
+        result = f"{result} days, Today is user {user}'s birthday !!!"
     else:
         result = f"{result} days"
+    return result
+
+@input_error
+def handler_show_birthday(*args) -> str:
+    user = args[0]
+    result = a_book.get_record(user).birthday
     return result
 
 COMMAND_EXIT = ("good bye", "close", "exit", "q", "quit")
@@ -137,6 +143,7 @@ COMMANDS = {
     "add birthday": handler_add_birthday,
     "delete birthday": handler_delete_birthday,
     "to birthday": handler_days_to_birthday,
+    "show birthday": handler_show_birthday,
     "add": handler_add,
 }
 
@@ -174,7 +181,6 @@ a_book = ab.AddressBook()
 
 def main():
     print("Bot init")
-    handler_add("Jon1", "+38044333223", "3344")
     while True:
         try:
             user_input = input("Enter your command:")

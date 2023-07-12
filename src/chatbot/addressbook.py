@@ -27,11 +27,14 @@ class AddressBook(UserDict):
 
 class Field:
 
-    def __init__(self, value: str) -> None:
+    def __init__(self, value: any) -> None:
         self.value = value
 
-    def __eq__(self, other):
-        return self.value == other
+    def __eq__(self, __other):
+        if isinstance(__other, Field):
+            return self.value == __other.value
+        else:
+            raise TypeError
 
     def __repr__(self):
         return str(self)
@@ -64,8 +67,11 @@ class Phone(Field):
 
 class Birthday(Field):
     def __init__(self, value: str) -> None:
-        self.value_date = date.fromisoformat(value)
+        value = date.fromisoformat(value)
         super().__init__(value)
+    
+    def __str__(self):
+        return self.value.isoformat()
 
 class Record:
 
@@ -104,17 +110,22 @@ class Record:
     def remove_phone(self, phone: Phone) -> None:
         self.phones.remove(phone)
         return True
-
+    
     def get_phones(self) -> str:
-        return ";".join([ str(ph) for ph in self.phones])
+        return ";".join([str(ph) for ph in self.phones])
+
 
     def get_csv_row(self) -> str:
-        cols = [str(self.name),self.get_phones(),str(self.email),str(self.address)]
+        cols = [str(self.name), 
+                self.get_phones(), 
+                str(self.email), 
+                str(self.address), 
+                str(self.birthday)]
         return ",".join(cols)
     
     @staticmethod
     def get_csv_header() -> str:
-        cols = ["name","phone","email","address"]
+        cols = ["name","phone","email","address","birthday"]
         return ",".join(cols)
 
     def add_birthday(self, birthday: Birthday) -> None:
@@ -128,10 +139,10 @@ class Record:
         if self.birthday:
             date_now = date.today()
             date_now_year = date_now.year
-            bd = self.birthday.value_date.replace(year=date_now_year)
+            bd = self.birthday.value.replace(year=date_now_year)
             if bd < date_now:
                 date_now_year += 1
-            bd = self.birthday.value_date.replace(year=date_now_year)
+            bd = self.birthday.value.replace(year=date_now_year)
             diff_bd = bd - date_now
             result = diff_bd.days
 
@@ -150,6 +161,8 @@ class Record:
         if self.email:
             cols.append(f"email: {self.email}")
         if self.address:
-            cols.append(f"address: {self.address}")    
+            cols.append(f"address: {self.address}")  
+        if self.birthday:
+            cols.append(f"birthday: {self.birthday}")
         return ", ".join(cols)
 
