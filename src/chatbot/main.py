@@ -68,13 +68,19 @@ def handler_delete_record(*args) -> str:
     a_book.remove_record(user)
     return "Done"
     
-
-
 def handler_show_all(*args) -> str:
-    if any(a_book.keys()):
+    if a_book.len():
         return a_book
     else:
         return "No users found, maybe you want to add them first?"
+
+def handler_show_page(*args) -> str:
+    try:
+        page = next(a_book)
+        return "\n".join([str(i) for i in page])
+    except StopIteration:
+            return "End list"               
+
 
 def handler_show_csv(*args) -> str:
     if any(a_book.keys()):
@@ -140,7 +146,8 @@ COMMANDS = {
     "delete phone": handler_delete_phone,
     "show phone": handler_show_phone,
     "show all": handler_show_all,
-    "show csv": handler_show_csv,   
+    "show page": handler_show_page,
+    "show csv": handler_show_csv, 
     "list": handler_show_all,
     "help": handler_help,
     "?": handler_help,
@@ -165,6 +172,7 @@ COMMANDS_HELP = {
     "show phone": "Show user's phones. Required username.",
     "show birthday": "Show user's birthday. Required username.",
     "show all": "Show all user's record.",
+    "show page": "Show all user's record per page.",
     "show csv": "Show all user's record in csv format",    
     "show": "Can be: show phone, show birthday, show all",
     "add": "Add user's phone or multiple phones separated by space. "

@@ -7,69 +7,63 @@
 ```
 python main.py
 Bot init
-Enter your command:add
+Enter your command:list
+name: Jon-00, phones: 38044333223;3344, birthday: 1988-02-17
+name: Jon-01, phones: 38044333223;3344
+name: Jon-02, phones: 38044333223;3344
+name: Jon-03, phones: 38044333223;3344
+name: Jon-04, phones: 38044333223;3344
+name: Jon-05, phones: 38044333223;3344
+name: Jon-06, phones: 38044333223;3344
+name: Jon-07, phones: 38044333223;3344
+name: Jon-08, phones: 38044333223;3344
+name: Jon-09, phones: 38044333223;3344
+name: Jon-10, phones: 38044333223;3344
+name: Jon-11, phones: 38044333223;3344
+name: Jon-12, phones: 38044333223;3344
+Enter your command:add birthday Jon-08 19990712
+Done
+Enter your command:list
+name: Jon-00, phones: 38044333223;3344, birthday: 1988-02-17
+name: Jon-01, phones: 38044333223;3344
+name: Jon-02, phones: 38044333223;3344
+name: Jon-03, phones: 38044333223;3344
+name: Jon-04, phones: 38044333223;3344
+name: Jon-05, phones: 38044333223;3344
+name: Jon-06, phones: 38044333223;3344
+name: Jon-07, phones: 38044333223;3344
+name: Jon-08, phones: 38044333223;3344, birthday: 1999-07-12
+name: Jon-09, phones: 38044333223;3344
+name: Jon-10, phones: 38044333223;3344
+name: Jon-11, phones: 38044333223;3344
+name: Jon-12, phones: 38044333223;3344
+Enter your command:add birthday Jon-06 2000.02.22
 Sorry, there are not enough parameters or their value may be incorrect. Please use the help for more information.
-Enter your command:
-List of commands: hello, add, delete user, change phone, delete phone, show phone, show all, list, help, ?, good bye, close, exit, q, quit
-Enter your command:add ?
-Add user's phone or multiple phones separated by space. Required username and phone.
-Enter your command:add Jon1 123 124 125
-Done
-Enter your command:list
-Jon1, 123;124;125
-Enter your command:delete
-Can be: delete user, delete phone
-Enter your command:delete phone ?
-Delete user's phone. Required username, phone
-Enter your command:delete phone Jon1 124
-Done
-Enter your command:list
-Jon1, 123;125
-Enter your command:delete phone Jon1 123
-Done
-Enter your command:list
-Jon1, 125
-Enter your command:delete phone Jon1 124
+Enter your command:add phone Jon-06 fffsfs
 Sorry, there are not enough parameters or their value may be incorrect. Please use the help for more information.
-Enter your command:delete phone Jon1 125
-Done
-Enter your command:list
-Jon1,
-Enter your command:add Jon1 123 124 125
-Done
-Enter your command:list
-Jon1, 123;124;125
-Enter your command:change
-Can be: change phone
-Enter your command:change phone Jon1 125 126
-Done
-Enter your command:list
-Jon1, 123;124;126
-Enter your command:list
-Jon1, 123;124;126
-Enter your command:?
-List of commands: hello, add, delete user, change phone, delete phone, show phone, show all, list, help, ?, good bye, close, exit, q, quit
-Enter your command:add Jon2 222
-Done
-Enter your command:list
-Jon1, 123;124;126
-Jon2, 222
-Enter your command:show phone Jon1
-123;124;126
-Enter your command:show phone Jon2
-222
-Enter your command:delete ?
-Help for this command 'delete ?' is not yet available
-Enter your command:delete
-Can be: delete user, delete phone
-Enter your command:delete user ?
-Delete ALL records of user. Required username.
-Enter your command:delete user Jon1
-Done
-Enter your command:list
-Jon2, 222
-Enter your command:?
-List of commands: hello, add, delete user, change phone, delete phone, show phone, show all, list, help, ?, good bye, close, exit, q, quit
+Enter your command:show page ?
+Show all user's record per page.
+Enter your command:show page
+name: Jon-00, phones: 38044333223;3344, birthday: 1988-02-17
+name: Jon-01, phones: 38044333223;3344
+name: Jon-02, phones: 38044333223;3344
+name: Jon-03, phones: 38044333223;3344
+name: Jon-04, phones: 38044333223;3344
+name: Jon-05, phones: 38044333223;3344
+name: Jon-06, phones: 38044333223;3344
+name: Jon-07, phones: 38044333223;3344
+name: Jon-08, phones: 38044333223;3344, birthday: 1999-07-12
+name: Jon-09, phones: 38044333223;3344
+Enter your command:show page
+name: Jon-10, phones: 38044333223;3344
+name: Jon-11, phones: 38044333223;3344
+name: Jon-12, phones: 38044333223;3344
+Enter your command:show page
+End list
+Enter your command:to birthday Jon-08
+0 days, Today is user Jon-08's birthday !!!
+Enter your command:to birthday Jon-00
+220 days
 Enter your command:q
 Good bye
 ```
