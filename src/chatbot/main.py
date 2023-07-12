@@ -141,6 +141,21 @@ def handler_show_birthday(*args) -> str:
     result = a_book.get_record(user).birthday
     return result
 
+
+@input_error
+def api(command: str, *args: list[str]) -> None:
+    """API for run commands in batch mode
+
+    Args:
+        command (str): API command
+        list[str]: API command arguments
+
+    Returns:
+        print API command result
+    """
+    result = COMMANDS[command](*args)
+    print(f"api command '{command}': {result}")
+
 COMMAND_EXIT = ("good bye", "close", "exit", "q", "quit")
 
 COMMANDS = {
@@ -196,10 +211,10 @@ a_book = AddressBook()
 
 
 def main():
-    print("Bot init")
+    print("\nChatBot initialized...\n")
     while True:
         try:
-            user_input = input("Enter your command:")
+            user_input = input("Enter your command >>> ")
         except KeyboardInterrupt:
             print("\r")
             break
