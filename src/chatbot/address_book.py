@@ -11,24 +11,24 @@ class AddressBook(UserDict):
         key = rec.name.value
         self.data[key] = rec
     
-    def get_record(self, key):
+    def get_record(self, key) -> Record:
         return self.data[key]
 
-    def remove_record(self, key):
+    def remove_record(self, key) -> None:
         del self.data[key]
 
     def len(self):
         return len(self.data)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
-    def get_csv(self):
+    def get_csv(self) -> str:
         result = [Record.get_csv_header()]
         result.extend([ str(r.get_csv_row()) for r in self.data.values() ])
         return "\n".join(result)
     
-    def __str__(self):
+    def __str__(self) -> str:
         #result = map(str, self.data.values())
         result = [ str(i) for i in self.data.values() ]
         return "\n".join(result)
@@ -37,7 +37,7 @@ class AddressBook(UserDict):
         self._page_pos = 0
         return self
 
-    def __next__(self):
+    def __next__(self) -> list[Record]:
         #print("start __next__", self._page_pos)
         if self._page_pos < len(self.data.keys()):
             result = []

@@ -61,6 +61,18 @@ class Record:
     def delete_birthday(self) -> None:
         self.birthday = None
 
+    def add_email(self, email: Email) -> None:
+        self.email = email
+
+    def delete_email(self) -> None:
+        self.email = None
+    
+    def add_address(self, address: Address) -> None:
+        self.address = address
+
+    def delete_address(self) -> None:
+        self.address = None
+
     def days_to_birthday(self) -> int:
         result = None
         if self.birthday:

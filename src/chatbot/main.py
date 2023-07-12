@@ -1,5 +1,5 @@
 from chatbot.address_book import AddressBook
-from chatbot.fields import Name, Phone, Birthday
+from chatbot.fields import Name, Phone, Birthday, Email, Address
 from chatbot.record import Record
 
 
@@ -115,11 +115,40 @@ def handler_add_birthday(*args) -> str:
     a_book.get_record(user).add_birthday(Birthday(birthday))
     return "Done"
 
+@input_error
+def handler_add_email(*args) -> str:
+    user = args[0]
+    email = args[1]
+    a_book.get_record(user).add_email(Email(email))
+    return "Done"
+
+
+@input_error
+def handler_add_address(*args) -> str:
+    user = args[0]
+    address = args[1]
+    a_book.get_record(user).add_address(Address(address))
+    return "Done"
+
 
 @input_error
 def handler_delete_birthday(*args) -> str:
     user = args[0]
     a_book.get_record(user).delete_birthday()
+    return "Done"
+
+
+@input_error
+def handler_delete_email(*args) -> str:
+    user = args[0]
+    a_book.get_record(user).delete_email()
+    return "Done"
+
+
+@input_error
+def handler_delete_address(*args) -> str:
+    user = args[0]
+    a_book.get_record(user).delete_address()
     return "Done"
 
 
@@ -139,6 +168,20 @@ def handler_days_to_birthday(*args) -> str:
 def handler_show_birthday(*args) -> str:
     user = args[0]
     result = a_book.get_record(user).birthday
+    return result
+
+
+@input_error
+def handler_show_email(*args) -> str:
+    user = args[0]
+    result = a_book.get_record(user).email
+    return result
+
+
+@input_error
+def handler_show_address(*args) -> str:
+    user = args[0]
+    result = a_book.get_record(user).address
     return result
 
 
@@ -172,28 +215,40 @@ COMMANDS = {
     "?": handler_help,
     "add birthday": handler_add_birthday,
     "delete birthday": handler_delete_birthday,
+    "add email": handler_add_email,
+    "delete email": handler_delete_email,
+    "add address": handler_add_address,
+    "delete address": handler_delete_address,
     "to birthday": handler_days_to_birthday,
     "show birthday": handler_show_birthday,
+    "show email": handler_show_email,
+    "show address": handler_show_address,
     "add": handler_add,
 }
 
 COMMANDS_HELP = {
     "hello": "Just hello",
     "delete user": "Delete ALL records of user. Required username.",
-    "delete": "Can be: delete user, delete phone",
     "change phone": "Change user's phone. Required username, old phone, new phone",
     "delete phone": "Delete user's phone. Required username, phone",
-    "change": "Can be: change phone",
-    "add birthday": "Add or change the user's birthday. Required username, birthday, "  
-                    "please use ISO 8601 date format",
+    "delete email": "Delete user's email. Required username, email",
+    "delete address": "Delete user's address. Required username, address",
     "delete birthday": "Delete user's birthday. Required username",
-    "to birthday": "Show days until the user's birthday. Required username,",
+    "delete": "Can be: delete user, delete phone",    
+    "change": "Can be: change phone",
+    "add birthday": "Add or replace the user's birthday. Required username, birthday, "  
+                    "please use ISO 8601 date format",
+    "add email": "Add or replace the user's email. Required username, email",
+    "add address": "Add or replace the user's address. Required username, address",
     "show phone": "Show user's phones. Required username.",
     "show birthday": "Show user's birthday. Required username.",
+    "show email": "Show user's email. Required username.",
+    "show address": "Show user's address. Required username.",
     "show all": "Show all user's record.",
     "show page": "Show all user's record per page. Optional parameter size of page [10]",
     "show csv": "Show all user's record in csv format",    
     "show": "Can be: show phone, show birthday, show all",
+    "to birthday": "Show days until the user's birthday. Required username,",   
     "add": "Add user's phone or multiple phones separated by space. "
             "Required username and phone.",
     "list": "Show all user's record.",   
