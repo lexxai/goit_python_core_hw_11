@@ -61,7 +61,7 @@ Sorry, there are not enough parameters or their value may be incorrect. Please u
 Enter your command:add phone Jon-06 fffsfs
 Sorry, there are not enough parameters or their value may be incorrect. Please use the help for more information.
 Enter your command:show page ?
-Show all user's record per page.
+Show all user's record per page. Optional parameter size of page [10]
 Enter your command:show page
 name: Jon-00, phones: 38044333223;3344, birthday: 1988-02-17
 name: Jon-01, phones: 38044333223;3344

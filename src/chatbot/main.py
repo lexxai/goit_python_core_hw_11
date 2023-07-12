@@ -74,12 +74,16 @@ def handler_show_all(*args) -> str:
     else:
         return "No users found, maybe you want to add them first?"
 
+
+@input_error
 def handler_show_page(*args) -> str:
+    if args[0]:
+        a_book.max_records_per_page = int(args[0])
     try:
         page = next(a_book)
         return "\n".join([str(i) for i in page])
     except StopIteration:
-            return "End list"               
+        return "End list"               
 
 
 def handler_show_csv(*args) -> str:
@@ -172,7 +176,7 @@ COMMANDS_HELP = {
     "show phone": "Show user's phones. Required username.",
     "show birthday": "Show user's birthday. Required username.",
     "show all": "Show all user's record.",
-    "show page": "Show all user's record per page.",
+    "show page": "Show all user's record per page. Optional parameter size of page [10]",
     "show csv": "Show all user's record in csv format",    
     "show": "Can be: show phone, show birthday, show all",
     "add": "Add user's phone or multiple phones separated by space. "
