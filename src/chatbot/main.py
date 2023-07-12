@@ -1,4 +1,8 @@
-import chatbot.addressbook as ab
+from chatbot.addressbook import AddressBook
+from chatbot.fields import Name, Phone, Birthday
+from chatbot.record import Record
+
+
 from functools import wraps
 
 
@@ -28,11 +32,11 @@ def input_error(func):
 def handler_add(*args) -> str:
     user = args[0]
     args[1]
-    phone = [ ab.Phone(p) for p in args[1:] ]
+    phone = [ Phone(p) for p in args[1:] ]
     if user in a_book:
         a_book.get_record(user).add_phone(phone)
     else:
-        rec = ab.Record(ab.Name(user), phone)
+        rec = Record(Name(user), phone)
         a_book.add_record(rec)
     return "Done"
 
@@ -42,7 +46,7 @@ def handler_change_phone(*args) -> str:
     user = args[0]
     old_phone = args[1]
     new_phone = args[2]
-    a_book.get_record(user).change_phone(ab.Phone(old_phone), ab.Phone(new_phone))
+    a_book.get_record(user).change_phone(Phone(old_phone), Phone(new_phone))
     return "Done"
 
 
@@ -55,7 +59,7 @@ def handler_show_phone(*args) -> str:
 def handler_delete_phone(*args) -> str:
     user = args[0]
     phone = args[1]
-    a_book.get_record(user).remove_phone(ab.Phone(phone))
+    a_book.get_record(user).remove_phone(Phone(phone))
     return "Done"    
 
 @input_error
@@ -98,7 +102,7 @@ def handler_help(*args) -> str:
 def handler_add_birthday(*args) -> str:
     user = args[0]
     birthday = args[1]
-    a_book.get_record(user).add_birthday(ab.Birthday(birthday))
+    a_book.get_record(user).add_birthday(Birthday(birthday))
     return "Done"
 
 
@@ -176,7 +180,7 @@ COMMANDS_HELP = {
     "good bye": "Exit of bot."
 }
 
-a_book = ab.AddressBook()
+a_book = AddressBook()
 
 
 def main():
@@ -210,27 +214,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-
-
-
-
-# if __name__ == "__main__":
-#     ab = AddressBook()
-#     rec = Record(Name("Jon1"),[Phone("000-0001"),Phone("000-0002")],email=Email("bademail"))
-#     rec.add_phone(Phone("000-0003"))
-#     #rec.remove_phone("00-0001")
-#     #print(rec)
-
-#     ab.add_record(rec)
-#     rec = Record("Jon2", ["200-0001", "200-0002"])
-#     ab.add_record(rec)
-#     rec = Record("Jon3", "300-0001", "Jon3@email.com")
-#     ab.add_record(rec)
-
-#     ab['Jon1'].remove_phone("000-0001")
-#     ab['Jon1'].address.value="Jon1 Home Street"
-#     ab['Jon2'].email.value = "Jon2@email.com"
-
-#     for v in ab.values():
-#         print( v)
