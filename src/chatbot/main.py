@@ -1,4 +1,4 @@
-from chatbot.addressbook import AddressBook
+from chatbot.address_book import AddressBook
 from chatbot.fields import Name, Phone, Birthday
 from chatbot.record import Record
 
