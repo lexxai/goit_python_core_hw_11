@@ -1,5 +1,6 @@
 from datetime import date
 
+# Parent class
 class Field:
 
     def __init__(self, value: any) -> None:
@@ -17,7 +18,7 @@ class Field:
     def __str__(self) -> str:
         return str(self.value)
 
-
+# Child classes 
 class Name(Field):
     ...
 
