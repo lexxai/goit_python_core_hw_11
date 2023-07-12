@@ -61,9 +61,17 @@ class Email(Field):
 
 class Phone(Field):
     def __init__(self, value: str) -> None:
-        value = str(int(value))
+        self.__value = None
+        self.value = value
         super().__init__(value)
+    
+    @property
+    def value(self):
+        return self.__value
 
+    @value.setter
+    def value(self, __new_value):
+        self.__value = str(int(__new_value))
 
 class Birthday(Field):
     def __init__(self, value: str) -> None:
