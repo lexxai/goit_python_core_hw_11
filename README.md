@@ -7,6 +7,25 @@
 ```
 python main.py
 Bot init
+Enter your command:?
+List of commands: hello, delete user, change phone, delete phone, show phone, show all, show page, show csv, list, help, ?, add birthday, delete birthday, to birthday, show birthday, add, good bye, close, exit, q, quit
+Enter your command:add birthday ?
+Add or change the user's birthday. Required username, birthday, please use ISO 8601 date format
+Enter your command:show csv
+name,phone,email,address,birthday
+Jon-00,38044333223;3344,None,None,1988-02-17
+Jon-01,38044333223;3344,None,None,None
+Jon-02,38044333223;3344,None,None,None
+Jon-03,38044333223;3344,None,None,None
+Jon-04,38044333223;3344,None,None,None
+Jon-05,38044333223;3344,None,None,None
+Jon-06,38044333223;3344,None,None,None
+Jon-07,38044333223;3344,None,None,None
+Jon-08,38044333223;3344,None,None,None
+Jon-09,38044333223;3344,None,None,None
+Jon-10,38044333223;3344,None,None,None
+Jon-11,38044333223;3344,None,None,None
+Jon-12,38044333223;3344,None,None,None
 Enter your command:list
 name: Jon-00, phones: 38044333223;3344, birthday: 1988-02-17
 name: Jon-01, phones: 38044333223;3344
