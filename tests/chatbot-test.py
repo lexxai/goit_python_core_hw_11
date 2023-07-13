@@ -24,6 +24,7 @@ if __name__ == "__main__":
     ChatBot.api("add address", "Jon-05", "Vul. Vorota gate 112, office. 2332")
     ChatBot.api("add address", "Jon-07", "Vul. Vorota gate 122")
     ChatBot.api("add birthday", "Jon-02", "1999-08-11")
+    ChatBot.api("help", "add birthday")
 
 
     ChatBot.main()
