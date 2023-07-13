@@ -6,13 +6,15 @@ from chatbot.record import Record
 from functools import wraps
 
 
-def parse_input(command_line: str) -> tuple[str, list]:
-    for command in COMMANDS:
-        if command_line.lower().startswith(command):
-            args = command_line.lstrip(command).strip().split(" ", 10)
-            args = [s.strip() for s in args]
-            return command, args
-    return command_line.lower(), []
+def parse_input(command_line: str) -> tuple[ str, object, list ]:
+    line:str = command_line.lower().lstrip()
+    for command, commands in COMMANDS.items():
+        for command_str in commands:
+            if line.startswith(command_str):
+                args = command_line[len(command_str):].strip().split()
+                args = [s.strip() for s in args]
+                return command_str, command, args
+    return "undefined", handler_undefined, []
 
 
 def input_error(func):
@@ -97,15 +99,13 @@ def handler_hello(*args) -> str:
     return "How can I help you?"
 
 
-def handler_help(*args) -> str:
-    command = " ".join(args)
+def handler_help( command:object = None ) -> str:
     if not command:
-        commands = list(COMMANDS.keys())
-        commands.extend(COMMAND_EXIT)
+        commands = list( c for cs in COMMANDS.values() for c in list(cs) )
         return "List of commands: " + ", ".join(commands)
     else:
         return COMMANDS_HELP.get(command,  
-               f"Help for this command '{command}' is not yet available")
+               "Help for this command is not yet available")
 
 
 @input_error
@@ -185,6 +185,22 @@ def handler_show_address(*args) -> str:
     return result
 
 
+def handler_exit(*args) -> str:
+    return ""
+
+
+def handler_undefined(*args) -> str:
+    return handler_help()
+
+
+def get_command_handler(command: str):
+    for ch in COMMANDS:
+        for cs in COMMANDS[ch]:
+            if cs == command:
+                return ch
+    return handler_undefined
+
+
 @input_error
 def api(command: str, *args: list[str]) -> None:
     """API for run commands in batch mode
@@ -195,71 +211,64 @@ def api(command: str, *args: list[str]) -> None:
 
     Returns:
         print API command result
+    
     """
-    result = COMMANDS[command](*args)
+    result = get_command_handler(command)(*args)
     print(f"api command '{command}': {result}")
 
-COMMAND_EXIT = ("good bye", "close", "exit", "q", "quit")
+
 
 COMMANDS = {
-    "hello": handler_hello,
-    "delete user": handler_delete_record,
-    "change phone": handler_change_phone,
-    "delete phone": handler_delete_phone,
-    "show phone": handler_show_phone,
-    "show all": handler_show_all,
-    "show page": handler_show_page,
-    "show csv": handler_show_csv, 
-    "list": handler_show_all,
-    "help": handler_help,
-    "?": handler_help,
-    "add birthday": handler_add_birthday,
-    "delete birthday": handler_delete_birthday,
-    "add email": handler_add_email,
-    "delete email": handler_delete_email,
-    "add address": handler_add_address,
-    "delete address": handler_delete_address,
-    "to birthday": handler_days_to_birthday,
-    "show birthday": handler_show_birthday,
-    "show email": handler_show_email,
-    "show address": handler_show_address,
-    "add": handler_add,
+    handler_hello: ("hello",),
+    handler_delete_record: ("delete user", "-"),
+    handler_change_phone: ("change phone",),
+    handler_delete_phone: ("delete phone",),
+    handler_show_phone: ("show phone",),
+    handler_show_all: ("show all", "list", "l"),
+    handler_show_page: ("show page",),
+    handler_show_csv: ("show csv",),
+    handler_help: ("help","?"),
+    handler_add_birthday: ("add birthday",), 
+    handler_delete_birthday: ("delete birthday",), 
+    handler_add_email: ("add email",), 
+    handler_delete_email: ("delete email",), 
+    handler_add_address: ("add address",),
+    handler_delete_address: ("delete address",),
+    handler_days_to_birthday:  ("to birthday", ),
+    handler_show_birthday: ("show birthday",),
+    handler_show_email: ("show email",),
+    handler_show_address: ("show address",),
+    handler_add: ("add", "+"),
+    handler_exit: ("good bye", "close", "exit", "q", "quit")
 }
 
+
 COMMANDS_HELP = {
-    "hello": "Just hello",
-    "delete user": "Delete ALL records of user. Required username.",
-    "change phone": "Change user's phone. Required username, old phone, new phone",
-    "delete phone": "Delete user's phone. Required username, phone",
-    "delete email": "Delete user's email. Required username, email",
-    "delete address": "Delete user's address. Required username, address",
-    "delete birthday": "Delete user's birthday. Required username",
-    "delete": "Can be: delete user, delete phone",    
-    "change": "Can be: change phone",
-    "add birthday": "Add or replace the user's birthday. Required username, birthday, "  
-                    "please use ISO 8601 date format",
-    "add email": "Add or replace the user's email. Required username, email",
-    "add address": "Add or replace the user's address. Required username, address",
-    "show phone": "Show user's phones. Required username.",
-    "show birthday": "Show user's birthday. Required username.",
-    "show email": "Show user's email. Required username.",
-    "show address": "Show user's address. Required username.",
-    "show all": "Show all user's record.",
-    "show page": "Show all user's record per page. Optional parameter size of page [10]",
-    "show csv": "Show all user's record in csv format",    
-    "show": "Can be: show phone, show birthday, show all",
-    "to birthday": "Show days until the user's birthday. Required username,",   
-    "add": "Add user's phone or multiple phones separated by space. "
-            "Required username and phone.",
-    "list": "Show all user's record.",   
-    "help": "List of commands  and their description.",
-    "?": "List of commands and their description. Also you can use '?' "
-         "for any command as parameter",
-    "exit": "Exit of bot.",
-    "close": "Exit of bot.",
-    "quit": "Exit of bot.",
-    "q": "Exit of bot.",
-    "good bye": "Exit of bot."
+    handler_hello: "Just hello",
+    handler_delete_record: "Delete ALL records of user. Required username.",
+    handler_change_phone: "Change user's phone. Required username, old phone, new phone",
+    handler_delete_phone: "Delete user's phone. Required username, phone",
+    handler_delete_email: "Delete user's email. Required username, email",
+    handler_delete_address: "Delete user's address. Required username, address",
+    handler_delete_birthday: "Delete user's birthday. Required username",
+    handler_add_birthday: "Add or replace the user's birthday. Required username, birthday, "
+                          "please use ISO 8601 date format",
+    handler_add_email: "Add or replace the user's email. Required username, email",
+    handler_add_address: "Add or replace the user's address. Required username, address",
+    handler_show_phone: "Show user's phones. Required username.",
+    handler_show_birthday: "Show user's birthday. Required username.",
+    handler_show_email: "Show user's email. Required username.",
+    handler_show_address: "Show user's address. Required username.",
+    handler_show_all: "Show all user's record.",
+    handler_show_page: "Show all user's record per page. Optional parameter size of page [10]",
+    handler_show_csv: "Show all user's record in csv format",
+    handler_days_to_birthday: "Show days until the user's birthday. Required username,",
+    handler_add: "Add user's phone or multiple phones separated by space. "
+                 "Required username and phone.",
+    handler_help: "List of commands and their description. Also you can use '?' "
+                  "for any command as parameter",
+    handler_exit: "Exit of bot.",
+    handler_undefined : "Command undefined"
 }
 
 a_book = AddressBook()
@@ -273,24 +282,20 @@ def main():
         except KeyboardInterrupt:
             print("\r")
             break
-        if user_input.lower() in COMMAND_EXIT:
-            break
+        
+        command_str, command, args = parse_input(user_input)
+        
+        if len(args) == 1 and  args[0] == "?" :
+            result = handler_help(command)
         else:
-            command, args = parse_input(user_input)
-            try:
-                if len(args) == 1 and  args[0] == "?" :
-                    result = COMMANDS['help'](command)
-                else:
-                    result = COMMANDS[command](*args)
-            except (KeyError):
-                result = COMMANDS['help'](command)
+            result = command(*args)
+        
+        if result:
                 print(result)
-                # print("Your command is not recognized, try to enter other command. "
-                #       "To get a list of all commands, you can use the 'help' command")
-            else:
-                if result:
-                    print(result)
-    print("Good bye")
+
+        if command == handler_exit:
+            break
+
 
 
 if __name__ == "__main__":
