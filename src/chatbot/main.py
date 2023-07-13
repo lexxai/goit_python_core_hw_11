@@ -99,11 +99,17 @@ def handler_hello(*args) -> str:
     return "How can I help you?"
 
 
-def handler_help( command:object = None ) -> str:
+def handler_help(*args) -> str:
+    command = None
+    if len(args):
+        command = args[0]
     if not command:
-        commands = list( c for cs in COMMANDS.values() for c in list(cs) )
+        commands = sorted(list( c for cs in COMMANDS.values() for c in list(cs) ))
         return "List of commands: " + ", ".join(commands)
     else:
+        if type(command) == str:
+            command = " ".join(args)
+            command = get_command_handler(command)
         return COMMANDS_HELP.get(command,  
                "Help for this command is not yet available")
 
@@ -193,7 +199,7 @@ def handler_undefined(*args) -> str:
     return handler_help()
 
 
-def get_command_handler(command: str):
+def get_command_handler(command: str) -> object:
     for ch in COMMANDS:
         for cs in COMMANDS[ch]:
             if cs == command:
@@ -268,7 +274,7 @@ COMMANDS_HELP = {
     handler_help: "List of commands and their description. Also you can use '?' "
                   "for any command as parameter",
     handler_exit: "Exit of bot.",
-    handler_undefined : "Command undefined"
+    handler_undefined: "Help for this command is not yet available"
 }
 
 a_book = AddressBook()
