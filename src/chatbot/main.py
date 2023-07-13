@@ -6,15 +6,15 @@ from chatbot.record import Record
 from functools import wraps
 
 
-def parse_input(command_line: str) -> tuple[ str, object, list ]:
+def parse_input(command_line: str) -> tuple[ object, list ]:
     line:str = command_line.lower().lstrip()
     for command, commands in COMMANDS.items():
         for command_str in commands:
             if line.startswith(command_str):
                 args = command_line[len(command_str):].strip().split()
                 args = [s.strip() for s in args]
-                return command_str, command, args
-    return "undefined", handler_undefined, []
+                return command, args
+    return handler_undefined, []
 
 
 def input_error(func):
@@ -283,7 +283,7 @@ def main():
             print("\r")
             break
         
-        command_str, command, args = parse_input(user_input)
+        command, args = parse_input(user_input)
         
         if len(args) == 1 and  args[0] == "?" :
             result = handler_help(command)
