@@ -42,11 +42,19 @@ class Record:
     def get_phones(self) -> str:
         return ";".join([str(ph) for ph in self.phones])
 
+    def filed_to_csv(self, value:str) -> str:
+        """
+            https://en.wikipedia.org/wiki/Comma-separated_values
+        """
+        if value.find(",") != -1:
+            value = f'"{value}"'
+        return value
+
     def get_csv_row(self) -> str:
         cols = [str(self.name),
                 self.get_phones(),
                 str(self.email),
-                str(self.address),
+                self.filed_to_csv(str(self.address)),
                 str(self.birthday)]
         return ",".join(cols)
 

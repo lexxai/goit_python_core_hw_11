@@ -126,7 +126,7 @@ def handler_add_email(*args) -> str:
 @input_error
 def handler_add_address(*args) -> str:
     user = args[0]
-    address = args[1]
+    address = " ".join(args[1:])
     a_book.get_record(user).add_address(Address(address))
     return "Done"
 
