@@ -85,9 +85,11 @@ Enter your command:to birthday Jon-00
 220 days
 Enter your command:q
 Good bye
-'''
+```
 
-'''
+## v.0.2.0
+
+```
 tests> python .\chatbot-test.py
 api command 'add': Done
 api command 'add birthday': Done
