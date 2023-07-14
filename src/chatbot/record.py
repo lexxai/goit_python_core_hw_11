@@ -34,7 +34,7 @@ class Record:
                 for ph in phone:
                     if ph not in self.phones:
                         self.phones.append(ph)
-                        return True
+                return True
             elif phone not in self.phones:
                 self.phones.append(phone)
                 return True
