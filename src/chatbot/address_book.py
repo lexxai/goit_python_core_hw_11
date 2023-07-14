@@ -10,12 +10,14 @@ class AddressBook(UserDict):
     def add_record(self, rec):
         key = rec.name.value
         self.data[key] = rec
+        return True
     
     def get_record(self, key) -> Record:
         return self.data[key]
 
     def remove_record(self, key) -> None:
         del self.data[key]
+        return True
 
     def len(self):
         return len(self.data)

@@ -3,22 +3,41 @@ from datetime import date
 
 class Record:
 
-    def __init__(self, name: Name, phone: Phone = None,
-                 email: Email = None, address: Address = None) -> None:
+    def __init__(self, name: Name, 
+                 phone: Phone = None,
+                 email: Email = None, 
+                 address: Address = None, 
+                 birthday: Birthday = None) -> None:
         self.name = name
         self.email = email
         self.address = address
         self.phones = []
         self.add_phone(phone)
-        self.birthday = None
+        self.birthday = birthday
 
     def add(self, field: Field) -> bool:
+        result = None
         if isinstance(field, Phone):
-            return self.add_phone(field)
+            result = self.add_phone(field)
+        elif isinstance(field, Birthday):
+            result = self.add_birthday(field)
+        elif isinstance(field, Email):
+            result = self.add_email(field)
+        elif isinstance(field, Address):
+            result = self.add_address(field)
+        return result
+            
 
     def remove(self, field: Field) -> bool:
         if isinstance(field, Phone):
             return self.remove_phone(field)
+        elif isinstance(field, Birthday):
+            result = self.remove_birthday(field)
+        elif isinstance(field, Email):
+            result = self.remove_email(field)
+        elif isinstance(field, Address):
+            result = self.remove_address(field)
+        return result
 
     def add_phone(self, phone: Phone) -> None:
         if (phone):
@@ -32,9 +51,11 @@ class Record:
 
     def change_phone(self, old_phone: Phone, new_phone: Phone) -> None:
         if old_phone and new_phone:
-            self.remove_phone(old_phone)
-            self.add_phone(new_phone)
-
+            for i, v in enumerate(self.phones):
+                if self.phones[i] == old_phone:
+                    self.phones[i] = new_phone
+                    return True
+    
     def remove_phone(self, phone: Phone) -> None:
         self.phones.remove(phone)
         return True
@@ -65,21 +86,30 @@ class Record:
 
     def add_birthday(self, birthday: Birthday) -> None:
         self.birthday = birthday
+        return True
 
     def delete_birthday(self) -> None:
-        self.birthday = None
+        if self.birthday:
+            self.birthday = None
+            return True
 
     def add_email(self, email: Email) -> None:
         self.email = email
+        return True
 
     def delete_email(self) -> None:
-        self.email = None
+        if self.email:
+            self.email = None
+            return True
     
     def add_address(self, address: Address) -> None:
         self.address = address
+        return True
 
     def delete_address(self) -> None:
-        self.address = None
+        if self.address:
+            self.address = None
+            return True
 
     def days_to_birthday(self) -> int:
         result = None

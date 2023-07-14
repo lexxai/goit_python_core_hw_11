@@ -30,6 +30,17 @@ def input_error(func):
     return wrapper
 
 
+def output_operation_describe(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if type(result) == str:
+                return result
+            else:
+                return "Done" if result else "The operation was not successful"
+            
+    return wrapper
+
 @input_error
 def handler_add(*args) -> str:
     user = args[0]
@@ -39,40 +50,45 @@ def handler_add(*args) -> str:
         a_book.get_record(user).add_phone(phone)
     else:
         rec = Record(Name(user), phone)
-        a_book.add_record(rec)
+        result = a_book.add_record(rec)
     return "Done"
 
 
+@output_operation_describe
 @input_error
 def handler_change_phone(*args) -> str:
     user = args[0]
     old_phone = args[1]
     new_phone = args[2]
-    a_book.get_record(user).change_phone(Phone(old_phone), Phone(new_phone))
-    return "Done"
+    return a_book.get_record(user).change_phone(Phone(old_phone), Phone(new_phone))
 
 
+@output_operation_describe
 @input_error
 def handler_show_phone(*args) -> str:
     user = args[0]
     return a_book.get_record(user).get_phones()
 
+
+@output_operation_describe
 @input_error
 def handler_delete_phone(*args) -> str:
     user = args[0]
     phone = args[1]
-    a_book.get_record(user).remove_phone(Phone(phone))
-    return "Done"    
+    return a_book.get_record(user).remove_phone(Phone(phone))
+   
 
+@output_operation_describe
 @input_error
 def handler_delete_record(*args) -> str:
     user = args[0]
-    a_book.remove_record(user)
-    return "Done"
-    
+    return a_book.remove_record(user)
+
+
+@output_operation_describe
 def handler_show_all(*args) -> str:
     if a_book.len():
-        return a_book
+        return str(a_book)
     else:
         return "No users found, maybe you want to add them first?"
 
@@ -114,50 +130,52 @@ def handler_help(*args) -> str:
                "Help for this command is not yet available")
 
 
+@output_operation_describe
 @input_error
 def handler_add_birthday(*args) -> str:
     user = args[0]
     birthday = args[1]
-    a_book.get_record(user).add_birthday(Birthday(birthday))
-    return "Done"
+    return a_book.get_record(user).add(Birthday(birthday))
 
+
+@output_operation_describe
 @input_error
 def handler_add_email(*args) -> str:
     user = args[0]
     email = args[1]
-    a_book.get_record(user).add_email(Email(email))
-    return "Done"
+    return a_book.get_record(user).add(Email(email))
 
 
+@output_operation_describe
 @input_error
 def handler_add_address(*args) -> str:
     user = args[0]
     address = " ".join(args[1:])
-    a_book.get_record(user).add_address(Address(address))
-    return "Done"
+    return a_book.get_record(user).add(Address(address))
 
 
+@output_operation_describe
 @input_error
 def handler_delete_birthday(*args) -> str:
     user = args[0]
-    a_book.get_record(user).delete_birthday()
-    return "Done"
+    return a_book.get_record(user).delete_birthday()
 
 
+@output_operation_describe
 @input_error
 def handler_delete_email(*args) -> str:
     user = args[0]
-    a_book.get_record(user).delete_email()
-    return "Done"
+    return a_book.get_record(user).delete_email()
 
 
+@output_operation_describe
 @input_error
 def handler_delete_address(*args) -> str:
     user = args[0]
-    a_book.get_record(user).delete_address()
-    return "Done"
+    return a_book.get_record(user).delete_address()
 
 
+@output_operation_describe
 @input_error
 def handler_days_to_birthday(*args) -> str:
     user = args[0]
@@ -170,6 +188,8 @@ def handler_days_to_birthday(*args) -> str:
         result = f"{result} days"
     return result
 
+
+@output_operation_describe
 @input_error
 def handler_show_birthday(*args) -> str:
     user = args[0]
@@ -177,6 +197,7 @@ def handler_show_birthday(*args) -> str:
     return result
 
 
+@output_operation_describe
 @input_error
 def handler_show_email(*args) -> str:
     user = args[0]
@@ -184,6 +205,7 @@ def handler_show_email(*args) -> str:
     return result
 
 
+@output_operation_describe
 @input_error
 def handler_show_address(*args) -> str:
     user = args[0]

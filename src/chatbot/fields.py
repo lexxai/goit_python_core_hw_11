@@ -4,7 +4,19 @@ from datetime import date
 class Field:
 
     def __init__(self, value: any) -> None:
+        self.__value = value
         self.value = value
+
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, __new_value):
+        if __new_value and __new_value.isprintable():
+            self.__value = __new_value
+        else:
+            raise ValueError("used non printable chars") 
 
     def __eq__(self, __other):
         if isinstance(__other, Field):
@@ -39,9 +51,10 @@ class Email(Field):
 
     @value.setter
     def value(self, __new_value):
-        if not (__new_value and '@' in __new_value):
-            __new_value = None
-        self.__value = __new_value
+        if __new_value and '@' in __new_value:
+            self.__value = __new_value
+        else:
+            raise ValueError("wrong email format")  
 
 
 class Phone(Field):
@@ -57,7 +70,11 @@ class Phone(Field):
 
     @value.setter
     def value(self, __new_value):
-        self.__value = str(int(__new_value))
+        try:
+            self.__value = str(int(__new_value))
+        except ValueError:
+            raise ValueError("wrong phone format")
+
 
 
 class Birthday(Field):
@@ -73,7 +90,11 @@ class Birthday(Field):
 
     @value.setter
     def value(self, __new_value):
-        self.__value = date.fromisoformat(__new_value)
+        d = date.fromisoformat(__new_value)
+        if d:
+            self.__value = d
+        else:
+            raise ValueError("wrong date format, not ISO 8601")
 
     def __str__(self):
         return self.value.isoformat()
