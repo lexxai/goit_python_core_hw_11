@@ -28,26 +28,16 @@ class Record:
         return result
             
 
-    def remove(self, field: Field) -> bool:
-        if isinstance(field, Phone):
-            return self.remove_phone(field)
-        elif isinstance(field, Birthday):
-            result = self.remove_birthday(field)
-        elif isinstance(field, Email):
-            result = self.remove_email(field)
-        elif isinstance(field, Address):
-            result = self.remove_address(field)
-        return result
-
     def add_phone(self, phone: Phone) -> None:
         if (phone):
             if (isinstance(phone, list)):
                 for ph in phone:
                     if ph not in self.phones:
                         self.phones.append(ph)
+                        return True
             elif phone not in self.phones:
                 self.phones.append(phone)
-            return True
+                return True
 
     def change_phone(self, old_phone: Phone, new_phone: Phone) -> None:
         if old_phone and new_phone:
@@ -57,8 +47,9 @@ class Record:
                     return True
     
     def remove_phone(self, phone: Phone) -> None:
-        self.phones.remove(phone)
-        return True
+        if phone in self.phones:
+            self.phones.remove(phone)
+            return True
 
     def get_phones(self) -> str:
         return ";".join([str(ph) for ph in self.phones])
@@ -130,8 +121,7 @@ class Record:
 
     def __str__(self) -> str:
         cols = [f"name: {self.name}"]
-        phone = self.phones
-        if len(phone):
+        if len(self.phones):
             cols.append(f"phones: {self.get_phones()}")
         if self.email:
             cols.append(f"email: {self.email}")

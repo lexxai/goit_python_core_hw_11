@@ -31,7 +31,6 @@ class AddressBook(UserDict):
         return "\n".join(result)
     
     def __str__(self) -> str:
-        #result = map(str, self.data.values())
         result = [ str(i) for i in self.data.values() ]
         return "\n".join(result)
 
@@ -40,17 +39,14 @@ class AddressBook(UserDict):
         return self
 
     def __next__(self) -> list[Record]:
-        #print("start __next__", self._page_pos)
         if self._page_pos < len(self.data.keys()):
             result = []
             keys = list(self.data)[self._page_pos:self._page_pos+self.max_records_per_page]
-            #print("__next__", self._page_pos, keys)
             for key in keys:
                 result.append(self.data[key])
             self._page_pos += self.max_records_per_page
             return result
         self._page_pos = 0
-        #print("StopIteration", self._page_pos)
         raise StopIteration
 
 

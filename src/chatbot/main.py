@@ -41,17 +41,20 @@ def output_operation_describe(func):
             
     return wrapper
 
+
+@output_operation_describe
 @input_error
 def handler_add(*args) -> str:
+    result = None
     user = args[0]
     args[1]
     phone = [ Phone(p) for p in args[1:] ]
     if user in a_book:
-        a_book.get_record(user).add_phone(phone)
+        result = a_book.get_record(user).add_phone(phone)
     else:
         rec = Record(Name(user), phone)
         result = a_book.add_record(rec)
-    return "Done"
+    return result
 
 
 @output_operation_describe
