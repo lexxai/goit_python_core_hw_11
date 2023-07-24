@@ -196,7 +196,7 @@ def handler_days_to_birthday(*args) -> str:
 @input_error
 def handler_show_birthday(*args) -> str:
     user = args[0]
-    result = a_book.get_record(user).birthday
+    result = str(a_book.get_record(user).birthday)
     return result
 
 

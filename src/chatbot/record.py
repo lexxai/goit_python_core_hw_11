@@ -110,10 +110,9 @@ class Record:
             bd = self.birthday.value.replace(year=date_now_year)
             if bd < date_now:
                 date_now_year += 1
-            bd = self.birthday.value.replace(year=date_now_year)
+                bd = self.birthday.value.replace(year=date_now_year)
             diff_bd = bd - date_now
             result = diff_bd.days
-
         return result
 
     def __repr__(self):
